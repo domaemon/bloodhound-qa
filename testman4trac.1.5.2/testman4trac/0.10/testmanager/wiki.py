@@ -321,7 +321,7 @@ class WikiTestManagerInterface(Component):
                 tag.input(type='submit', value=_("Delete Test Catalog"))
                 )
         else:
-            insert3 = HTML('')
+            insert3 = HTML(u'')
         
         common_code = self._write_common_code(req)
         
@@ -452,13 +452,13 @@ class WikiTestManagerInterface(Component):
                     self._get_custom_fields_markup(test_case, tmmodelprovider.get_custom_fields_for_realm('testcase')),
                     tag.br(),
                     tag.input(type='button', value=_("Open a Ticket on this Test Case"), onclick='creaTicket("'+tc_name+'", "", "", "'+summary+'")'),
-                    HTML('&nbsp;&nbsp;'), 
+                    HTML(u'&nbsp;&nbsp;'), 
                     tag.input(type='button', value=_("Show Related Tickets"), onclick='showTickets("'+tc_name+'", "", "")'),
-                    HTML('&nbsp;&nbsp;'), 
+                    HTML(u'&nbsp;&nbsp;'), 
                     tag.input(type='button', id='moveTCButton', value=_("Move the Test Case into another catalog"), onclick='copyTestCaseToClipboard("'+tc_name+'")'),
-                    HTML('&nbsp;&nbsp;'), 
+                    HTML(u'&nbsp;&nbsp;'), 
                     tag.input(type='button', id='duplicateTCButton', value=_("Duplicate the Test Case"), onclick='duplicateTestCase("'+tc_name+'", "'+cat_name+'")'),
-                    HTML('&nbsp;&nbsp;'), 
+                    HTML(u'&nbsp;&nbsp;'), 
                     tag.input(type='button', id='addToTestPlanTCButton', value=_("Add to a Test Plan"), onclick='addTestCaseToTestplanDialog("'+tc_name+'")'),
                     tag.div(class_='field')(
                         self._get_object_change_history_markup(test_case)
@@ -519,9 +519,9 @@ class WikiTestManagerInterface(Component):
                     tag.br(), tag.br(),
                     self._get_update_to_latest_version_markup(tp, tc_name, planid),
                     tag.input(type='button', value=_("Open a Ticket on this Test Case"), onclick='creaTicket("'+tc_name+'", "'+planid+'", "'+plan_name+'", "'+summary+'")'),
-                    HTML('&nbsp;&nbsp;'), 
+                    HTML(u'&nbsp;&nbsp;'), 
                     tag.input(type='button', value=_("Show Related Tickets"), onclick='showTickets("'+tc_name+'", "'+planid+'", "'+plan_name+'")'),
-                    HTML('&nbsp;&nbsp;'), 
+                    HTML(u'&nbsp;&nbsp;'), 
                     self._get_remove_from_tp_markup(tp, tc_name, planid),
                     tag.br(), tag.br(), 
                     self._get_testcase_status_history_markup(formatter, has_status, page_name, planid),
@@ -535,15 +535,15 @@ class WikiTestManagerInterface(Component):
 
     def _get_update_to_latest_version_markup(self, tp, tc_name, planid):
         if tp['freeze_tc_versions']:
-            return tag.input(type='button', value=_("Update to latest version of Test Case"), onclick='updateTestCase("'+tc_name+'", "'+planid+'")'), HTML('&nbsp;&nbsp;')
+            return tag.input(type='button', value=_("Update to latest version of Test Case"), onclick='updateTestCase("'+tc_name+'", "'+planid+'")'), HTML(u'&nbsp;&nbsp;')
         else:
-            return HTML('')
+            return HTML(u'')
         
     def _get_remove_from_tp_markup(self, tp, tc_name, planid):
         if not tp['contains_all']:
-            return tag.input(type='button', value=_("Remove from the Test Plan"), onclick='removeTestCase("'+tc_name+'", "'+planid+'")'), HTML('&nbsp;&nbsp;')
+            return tag.input(type='button', value=_("Remove from the Test Plan"), onclick='removeTestCase("'+tc_name+'", "'+planid+'")'), HTML(u'&nbsp;&nbsp;')
         else:
-            return HTML('')
+            return HTML(u'')
     
     def _get_breadcrumb_markup(self, formatter, planid, page_name, mode='tree', fulldetails='False'):
         if planid and not planid == '-1':
