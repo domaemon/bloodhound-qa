@@ -8,3 +8,6 @@ pip install ../bloodhound_search
 python bloodhound_setup.py
 cd $BHQA_PROJECT_DIR/testman4trac.1.5.2
 ./build.sh
+tr-admin /home/msugano/GIT_DIR/bloodhound-qa/installer/bloodhound/environments/main upgrade
+tr-admin /home/msugano/GIT_DIR/bloodhound-qa/installer/bloodhound/environments/main wiki upgrade
+
