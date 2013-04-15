@@ -79,11 +79,11 @@ class TestManagerWorkflowInterface(Component):
         page_name = req.args.get('page', 'WikiStart')
         planid = req.args.get('planid', '-1')
 
-        if page_name == 'TC':
+        if page_name and page_name == 'TC':
             # The root catalog does not have workflows
             return stream
 
-        if page_name.startswith('TC') and filename == 'wiki_view.html':
+        if page_name and page_name.startswith('TC') and filename == 'wiki_view.html':
             self.log.debug(">>> TestManagerWorkflowInterface - filter_stream")
             req.perm.require('TEST_VIEW')
             

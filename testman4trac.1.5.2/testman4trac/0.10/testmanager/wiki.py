@@ -138,7 +138,7 @@ class WikiTestManagerInterface(Component):
             self.env, Context.from_request(req, Resource('testmanager'))
             )
         
-        if page_name.startswith('TC'):
+        if page_name and page_name.startswith('TC'):
             req.perm.require('TEST_VIEW')
             
             if page_name.find('_TC') >= 0:
