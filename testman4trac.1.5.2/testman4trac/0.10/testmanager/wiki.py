@@ -142,18 +142,18 @@ class WikiTestManagerInterface(Component):
             req.perm.require('TEST_VIEW')
             
             if page_name.find('_TC') >= 0:
-                if filename == 'wiki_view.html':
+                if filename == 'wiki_view.html' or filename == 'bh_wiki_view.html':
                     if not planid or planid == '-1':
                         return self._testcase_wiki_view(req, formatter, planid, page_name, stream)
                     else:
                         return self._testcase_in_plan_wiki_view(req, formatter, planid, page_name, stream)
             elif page_name == 'TC' or page_name.find('_TT') >= 0:
-                if filename == 'wiki_view.html':
+                if filename == 'wiki_view.html' or filename == 'bh_wiki_view.html':
                     if not planid or planid == '-1':
                         return self._catalog_wiki_view(req, formatter, page_name, stream)
                     else:
                         return self._testplan_wiki_view(req, formatter, page_name, planid, stream)
-                elif filename == 'wiki_delete.html':
+                elif filename == 'wiki_delete.html' or filename == 'bh_wiki_delete.html':
                     if not planid or planid == '-1':
                         if not delete_version or delete_version == '' or version == '1':
                             return self._catalog_wiki_delete(req, formatter, page_name, stream)
