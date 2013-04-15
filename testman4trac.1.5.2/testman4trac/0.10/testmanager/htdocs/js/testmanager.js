@@ -97,7 +97,7 @@ function createTestPlanConfirm(catName) {
     //var testplanContainsAll = $("input[@name='testplan_contains_all']:checked").val();
     //var testplanSnapshot = $("input[@name=testplan_snapshot]:checked").val();
 
-    var nodes = $("input[@name='testplan_contains_all']:checked");
+    var nodes = $("input[name='testplan_contains_all']:checked");
     for (var i=0; i<nodes.length; i++) {
         var node = nodes[i];
         if (node.name == 'testplan_contains_all') {
@@ -105,7 +105,7 @@ function createTestPlanConfirm(catName) {
         }
     }
 
-    nodes = $("input[@name='testplan_snapshot']:checked");
+    nodes = $("input[name='testplan_snapshot']:checked");
     for (var i=0; i<nodes.length; i++) {
         var node = nodes[i];
         if (node.name == 'testplan_snapshot') {
@@ -141,7 +141,7 @@ function addTestCaseToTestplanDialog() {
 function addTestCaseToPlan(tcId, tcatId) {
 	(function($) {
 		$(function() {
-			var planid = $("input[@name=selected_planid]:checked").val();
+			var planid = $("input[name=selected_planid]:checked").val();
 			
 			if (planid && planid != '') {
 				var url = baseLocation+"/testcreate?type=testcaseinplan&tcatId="+tcatId+"&tcId="+tcId+"&planid="+planid;
