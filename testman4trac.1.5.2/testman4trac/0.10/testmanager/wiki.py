@@ -214,7 +214,7 @@ class WikiTestManagerInterface(Component):
             fieldLabel = _("New Catalog:")
             buttonLabel = _("Add a Catalog")
         else:
-            insert1 = tag.div()(
+            insert1 = tag.div(class_='span12')(
                         self._get_breadcrumb_markup(formatter, None, page_name, mode, fulldetails),
                         tag.div(style='border: 1px, solid, gray; padding: 1px;')(
                             self._get_switch_view_icon_markup(req, page_name, mode, fulldetails)
@@ -350,7 +350,7 @@ class WikiTestManagerInterface(Component):
         
         tp = TestPlan(self.env, planid)
         
-        insert1 = tag.div()(
+        insert1 = tag.div(class_='span12')(
                     tag.a(href=req.href.wiki(page_name))(_("Back to the Catalog")),
                     tag.div(style='border: 1px, solid, gray; padding: 1px;')(
                         self._get_switch_view_icon_markup(req, page_name, mode, fulldetails, planid)
@@ -427,7 +427,7 @@ class WikiTestManagerInterface(Component):
         
         tmmodelprovider = GenericClassModelProvider(self.env)
         
-        insert1 = tag.div()(
+        insert1 = tag.div(class_='span12')(
                     self._get_breadcrumb_markup(formatter, planid, page_name, mode, fulldetails),
                     tag.br(),
                     tag.div(id='copiedMultipleTCsMessage', class_='messageBox', style='display: none;')(
@@ -500,7 +500,7 @@ class WikiTestManagerInterface(Component):
         
         add_stylesheet(req, 'testmanager/css/menu.css')
         
-        insert1 = tag.div()(
+        insert1 = tag.div(class_='span12')(
                     self._get_breadcrumb_markup(formatter, planid, page_name, mode, fulldetails),
                     tag.br(), tag.br(), tag.br(), 
                     tag.span(style='font-size: large; font-weight: bold;')(
