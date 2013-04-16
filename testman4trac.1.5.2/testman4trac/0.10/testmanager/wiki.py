@@ -201,7 +201,7 @@ class WikiTestManagerInterface(Component):
         
         if page_name == 'TC':
             # Root of all catalogs
-            insert1 = tag.div()(
+            insert1 = tag.div(class_='span12')(
                         tag.div(id='pasteMultipleTCsHereMessage', class_='messageBox', style='display: none;')(_("Select the catalog into which to paste the Test Cases and click on 'Paste the copied Test Cases here'. "),
                             tag.a(href='javascript:void(0);', onclick='cancelTCsCopy()')(_("Cancel"))
                             ),
@@ -234,7 +234,7 @@ class WikiTestManagerInterface(Component):
             fieldLabel = _("New Sub-Catalog:")
             buttonLabel = _("Add a Sub-Catalog")
 
-        insert2 = tag.div()(
+        insert2 = tag.div(class_='span12')(
                     HTML(self._build_catalog_tree(formatter.context, page_name, mode, fulldetails, table_columns, table_columns_map, custom_ctx)),
                     tag.div(class_='testCaseList')(
                         tag.br(), tag.br()
@@ -328,7 +328,7 @@ class WikiTestManagerInterface(Component):
         stream = stream | Transformer('//div[contains(@id, "delete")]').wrap(tag.div(id='old_delete', style='display: none;'))
         stream = stream | Transformer('//div[contains(@id, "old_delete")]').after(insert3)
         
-        return stream | Transformer('//body').append(common_code) | Transformer('//div[contains(@class,"wikipage")]').after(insert2) | Transformer('//div[contains(@class,"wikipage")]').before(insert1)
+        return stream | Transformer('//body').append(common_code) | Transformer('//div[contains(@class,"wikipage")]').after(insert2) | Transformer('//div[contains(@class,"wikipage")]').after(insert1)
 
         
     def _testplan_wiki_view(self, req, formatter, page_name, planid, stream):
