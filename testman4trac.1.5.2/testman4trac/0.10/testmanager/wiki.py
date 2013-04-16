@@ -250,11 +250,12 @@ class WikiTestManagerInterface(Component):
         insert2.append(tag.div(class_='field')(
                     tag.br(), tag.br(), tag.br(),
                     tag.label(
-                        fieldLabel,
                         tag.span(id='catErrorMsgSpan', style='color: red;'),
                         tag.br(),
-                        tag.input(id='catName', type='text', name='catName', size='50'),
-                        tag.input(class_='btn', type='button', value=buttonLabel, onclick='creaTestCatalog("'+cat_name+'")')
+                        tag.div(class_='input-append')(
+                            tag.input(id='catName', placeholder=fieldLabel, type='text', name='catName', size='50'),
+                            tag.input(class_='btn', type='button', value=buttonLabel, onclick='creaTestCatalog("'+cat_name+'")')
+                        )
                         )
                     ))
 
@@ -263,19 +264,20 @@ class WikiTestManagerInterface(Component):
             #   cannot generate test plans and does not need a test plans list
             insert2.append(tag.div(class_='field')(
                         tag.label(
-                            _("New Test Case:"),
                             tag.span(id='errorMsgSpan', style='color: red;'),
                             tag.br(),
-                            tag.input(id='tcName', type='text', name='tcName', size='50'),
-                            tag.input(class_='btn', type='button', value=_("Add a Test Case"), onclick='creaTestCase("'+cat_name+'")')
+                            tag.div(class_='input-append')(
+                                tag.input(id='tcName', placeholder='New Test Case:', type='text', name='tcName', size='50'),
+                                tag.input(class_='btn', type='button', value=_("Add a Test Case"), onclick='creaTestCase("'+cat_name+'")')
+                            )
                             ),
-                        tag.br(), 
                         tag.label(
-                            _("New Test Plan:"),
                             tag.span(id='errorMsgSpan2', style='color: red;'),
                             tag.br(),
-                            tag.input(id='planName', type='text', name='planName', size='50'),
-                            tag.input(class_='btn', type='button', value=_("Generate a new Test Plan"), onclick='creaTestPlan("'+cat_name+'")')
+                            tag.div(class_='input-append')(
+                                tag.input(id='planName', placeholder='New Test Plan:', type='text', name='planName', size='50'),
+                                tag.input(class_='btn', type='button', value=_("Generate a new Test Plan"), onclick='creaTestPlan("'+cat_name+'")')
+                            )
                             ),
                         tag.br(), 
                         ))
@@ -1039,7 +1041,7 @@ class WikiTestManagerInterface(Component):
         text = u''
 
         if mode == 'tree':
-            text +='<div style="padding: 0px 0px 10px 10px">'+_("Filter:")+' <input id="tcFilter" title="'+_("Type the test to search for, even more than one word. You can also filter on the test case status (untested, successful, failed).")+'" type="text" size="40" onkeyup="starthighlight(\'ticketContainer\', this.value)"/>&nbsp;&nbsp;<span id="ticketContainer_searchResultsNumberId" style="font-weight: bold;"></span></div>'
+            text +='<div style="padding: 0px 0px 10px 10px"><input id="tcFilter" placeholder="Filter:" title="'+_("Type the test to search for, even more than one word. You can also filter on the test case status (untested, successful, failed).")+'" type="text" size="40" onkeyup="starthighlight(\'ticketContainer\', this.value)"/>&nbsp;&nbsp;<span id="ticketContainer_searchResultsNumberId" style="font-weight: bold;"></span></div>'
             text +='<div style="font-size: 0.8em;padding-left: 10px"><a style="margin-right: 10px" onclick="toggleAll(\'ticketContainer\', true)" href="javascript:void(0)">'+_("Expand all")+'</a><a onclick="toggleAll(\'ticketContainer\', false)" href="javascript:void(0)">'+_("Collapse all")+'</a></div>'
             text +='<div id="ticketContainer">'
 
