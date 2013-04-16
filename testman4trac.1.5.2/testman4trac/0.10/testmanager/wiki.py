@@ -254,7 +254,7 @@ class WikiTestManagerInterface(Component):
                         tag.span(id='catErrorMsgSpan', style='color: red;'),
                         tag.br(),
                         tag.input(id='catName', type='text', name='catName', size='50'),
-                        tag.input(type='button', value=buttonLabel, onclick='creaTestCatalog("'+cat_name+'")')
+                        tag.input(class_='btn', type='button', value=buttonLabel, onclick='creaTestCatalog("'+cat_name+'")')
                         )
                     ))
 
@@ -267,7 +267,7 @@ class WikiTestManagerInterface(Component):
                             tag.span(id='errorMsgSpan', style='color: red;'),
                             tag.br(),
                             tag.input(id='tcName', type='text', name='tcName', size='50'),
-                            tag.input(type='button', value=_("Add a Test Case"), onclick='creaTestCase("'+cat_name+'")')
+                            tag.input(class_='btn', type='button', value=_("Add a Test Case"), onclick='creaTestCase("'+cat_name+'")')
                             ),
                         tag.br(), 
                         tag.label(
@@ -275,7 +275,7 @@ class WikiTestManagerInterface(Component):
                             tag.span(id='errorMsgSpan2', style='color: red;'),
                             tag.br(),
                             tag.input(id='planName', type='text', name='planName', size='50'),
-                            tag.input(type='button', value=_("Generate a new Test Plan"), onclick='creaTestPlan("'+cat_name+'")')
+                            tag.input(class_='btn', type='button', value=_("Generate a new Test Plan"), onclick='creaTestPlan("'+cat_name+'")')
                             ),
                         tag.br(), 
                         ))
@@ -285,24 +285,24 @@ class WikiTestManagerInterface(Component):
         insert2.append(tag.br())
                     
         insert2.append(tag.input(
-                type='button', id='showSelectionBoxesButton', value=_("Select Multiple Test Cases"), onclick='showSelectionCheckboxes()')
+                class_='btn', type='button', id='showSelectionBoxesButton', value=_("Select Multiple Test Cases"), onclick='showSelectionCheckboxes()')
                 )
         insert2.append(tag.input(
-                type='button', id='copyMultipleTCsButton', value=_("Copy the Selected Test Cases"), onclick='copyMultipleTestCasesToClipboard()')
+                class_='btn', type='button', id='copyMultipleTCsButton', value=_("Copy the Selected Test Cases"), onclick='copyMultipleTestCasesToClipboard()')
                 )
                     
         if not page_name == 'TC':
-            insert2.append(tag.input(type='button', id='pasteMultipleTCsHereButton', value=_("Paste the copied Test Cases here"), onclick='pasteMultipleTestCasesIntoCatalog("'+cat_name+'")')
+            insert2.append(tag.input(class_='btn', type='button', id='pasteMultipleTCsHereButton', value=_("Paste the copied Test Cases here"), onclick='pasteMultipleTestCasesIntoCatalog("'+cat_name+'")')
                     )
 
-            insert2.append(tag.input(type='button', id='pasteTCHereButton', value=_("Move the copied Test Case here"), onclick='pasteTestCaseIntoCatalog("'+cat_name+'")')
+            insert2.append(tag.input(class_='btn', type='button', id='pasteTCHereButton', value=_("Move the copied Test Case here"), onclick='pasteTestCaseIntoCatalog("'+cat_name+'")')
                     )
 
             insert2.append(HTML(self._get_import_dialog_markup(req, cat_name)))
-            insert2.append(tag.input(type='button', id='importTestCasesButton', value=_("Import Test Cases"), onclick='importTestCasesIntoCatalog("'+cat_name+'")')
+            insert2.append(tag.input(class_='btn', type='button', id='importTestCasesButton', value=_("Import Test Cases"), onclick='importTestCasesIntoCatalog("'+cat_name+'")')
                     )
             insert2.append(HTML(self._get_export_dialog_markup(req, cat_name, '-1', 'testcatalog')))
-            insert2.append(tag.input(type='button', id='exportTestCasesButton', value=_("Export Test Catalog"), onclick='exportTestCasesFromCatalog("'+cat_name+'")')
+            insert2.append(tag.input(class_='btn', type='button', id='exportTestCasesButton', value=_("Export Test Catalog"), onclick='exportTestCasesFromCatalog("'+cat_name+'")')
                     )
 
             insert2.append(tag.div(class_='field')(
@@ -317,8 +317,8 @@ class WikiTestManagerInterface(Component):
 
         if not page_name == 'TC':        
             insert3 = tag.div(id='new_delete')(
-                tag.input(type='submit', value=_("Delete this version"), name='delete_version'),
-                tag.input(type='submit', value=_("Delete Test Catalog"))
+                tag.input(class_='btn', type='submit', value=_("Delete this version"), name='delete_version'),
+                tag.input(class_='btn', type='submit', value=_("Delete Test Catalog"))
                 )
         else:
             insert3 = HTML(u'')
@@ -328,7 +328,7 @@ class WikiTestManagerInterface(Component):
         stream = stream | Transformer('//div[contains(@id, "delete")]').wrap(tag.div(id='old_delete', style='display: none;'))
         stream = stream | Transformer('//div[contains(@id, "old_delete")]').after(insert3)
         
-        return stream | Transformer('//body').append(common_code) | Transformer('//div[contains(@class,"wikipage")]').after(insert2) | Transformer('//div[contains(@class,"wikipage")]').after(insert1)
+        return stream | Transformer('//body').append(common_code) | Transformer('//div[contains(@class,"wikipage")]').after(insert2) | Transformer('//div[contains(@class,"wikipage")]').before(insert1)
 
         
     def _testplan_wiki_view(self, req, formatter, page_name, planid, stream):
@@ -362,14 +362,14 @@ class WikiTestManagerInterface(Component):
                         ),
                     )
 
-        insert2 = tag.div()(
+        insert2 = tag.div(class_='span12')(
                     HTML(self._build_testplan_tree(formatter.context, str(planid), page_name, mode, self.sortby, table_columns, table_columns_map, custom_ctx)),
                     tag.div(class_='testCaseList')(
                     tag.br(),
                     self._get_custom_fields_markup(test_plan, tmmodelprovider.get_custom_fields_for_realm('testplan')),
                     tag.br(),
                     HTML(self._get_export_dialog_markup(req, cat_name, planid, 'testplan')),
-                    tag.input(type='button', id='exportTestCasesButton', value=_("Export Test Plan"), onclick='exportTestCasesFromCatalog("'+cat_name+'")'),
+                    tag.input(class_='btn', type='button', id='exportTestCasesButton', value=_("Export Test Plan"), onclick='exportTestCasesFromCatalog("'+cat_name+'")'),
                     tag.br(),
                     ),
                     tag.div(class_='field')(
@@ -447,19 +447,19 @@ class WikiTestManagerInterface(Component):
                         )
                     )
         
-        insert2 = tag.div(class_='field', style='marging-top: 60px;')(
+        insert2 = tag.div(class_='span12 field', style='marging-top: 60px;')(
                     tag.br(), tag.br(), 
                     self._get_custom_fields_markup(test_case, tmmodelprovider.get_custom_fields_for_realm('testcase')),
                     tag.br(),
-                    tag.input(type='button', value=_("Open a Ticket on this Test Case"), onclick='creaTicket("'+tc_name+'", "", "", "'+summary+'")'),
+                    tag.input(class_='btn', type='button', value=_("Open a Ticket on this Test Case"), onclick='creaTicket("'+tc_name+'", "", "", "'+summary+'")'),
                     HTML(u'&nbsp;&nbsp;'), 
-                    tag.input(type='button', value=_("Show Related Tickets"), onclick='showTickets("'+tc_name+'", "", "")'),
+                    tag.input(class_='btn', type='button', value=_("Show Related Tickets"), onclick='showTickets("'+tc_name+'", "", "")'),
                     HTML(u'&nbsp;&nbsp;'), 
-                    tag.input(type='button', id='moveTCButton', value=_("Move the Test Case into another catalog"), onclick='copyTestCaseToClipboard("'+tc_name+'")'),
+                    tag.input(class_='btn', type='button', id='moveTCButton', value=_("Move the Test Case into another catalog"), onclick='copyTestCaseToClipboard("'+tc_name+'")'),
                     HTML(u'&nbsp;&nbsp;'), 
-                    tag.input(type='button', id='duplicateTCButton', value=_("Duplicate the Test Case"), onclick='duplicateTestCase("'+tc_name+'", "'+cat_name+'")'),
+                    tag.input(class_='btn', type='button', id='duplicateTCButton', value=_("Duplicate the Test Case"), onclick='duplicateTestCase("'+tc_name+'", "'+cat_name+'")'),
                     HTML(u'&nbsp;&nbsp;'), 
-                    tag.input(type='button', id='addToTestPlanTCButton', value=_("Add to a Test Plan"), onclick='addTestCaseToTestplanDialog("'+tc_name+'")'),
+                    tag.input(class_='btn', type='button', id='addToTestPlanTCButton', value=_("Add to a Test Plan"), onclick='addTestCaseToTestplanDialog("'+tc_name+'")'),
                     tag.div(class_='field')(
                         self._get_object_change_history_markup(test_case)
                         ),
@@ -511,16 +511,16 @@ class WikiTestManagerInterface(Component):
                         )
                     )
         
-        insert2 = tag.div(class_='field', style='marging-top: 60px;')(
+        insert2 = tag.div(class_='span12 field', style='marging-top: 60px;')(
                     tag.br(), tag.br(),
                     self._get_custom_fields_markup(tcip, tmmodelprovider.get_custom_fields_for_realm('testcaseinplan'), ('page_name', 'status')),
                     tag.br(), 
                     self._get_testcase_change_status_markup(formatter, has_status, page_name, planid),
                     tag.br(), tag.br(),
                     self._get_update_to_latest_version_markup(tp, tc_name, planid),
-                    tag.input(type='button', value=_("Open a Ticket on this Test Case"), onclick='creaTicket("'+tc_name+'", "'+planid+'", "'+plan_name+'", "'+summary+'")'),
+                    tag.input(class_='btn', type='button', value=_("Open a Ticket on this Test Case"), onclick='creaTicket("'+tc_name+'", "'+planid+'", "'+plan_name+'", "'+summary+'")'),
                     HTML(u'&nbsp;&nbsp;'), 
-                    tag.input(type='button', value=_("Show Related Tickets"), onclick='showTickets("'+tc_name+'", "'+planid+'", "'+plan_name+'")'),
+                    tag.input(class_='btn', type='button', value=_("Show Related Tickets"), onclick='showTickets("'+tc_name+'", "'+planid+'", "'+plan_name+'")'),
                     HTML(u'&nbsp;&nbsp;'), 
                     self._get_remove_from_tp_markup(tp, tc_name, planid),
                     tag.br(), tag.br(), 
@@ -535,13 +535,13 @@ class WikiTestManagerInterface(Component):
 
     def _get_update_to_latest_version_markup(self, tp, tc_name, planid):
         if tp['freeze_tc_versions']:
-            return tag.input(type='button', value=_("Update to latest version of Test Case"), onclick='updateTestCase("'+tc_name+'", "'+planid+'")'), HTML(u'&nbsp;&nbsp;')
+            return tag.input(class_='btn', type='button', value=_("Update to latest version of Test Case"), onclick='updateTestCase("'+tc_name+'", "'+planid+'")'), HTML(u'&nbsp;&nbsp;')
         else:
             return HTML(u'')
         
     def _get_remove_from_tp_markup(self, tp, tc_name, planid):
         if not tp['contains_all']:
-            return tag.input(type='button', value=_("Remove from the Test Plan"), onclick='removeTestCase("'+tc_name+'", "'+planid+'")'), HTML(u'&nbsp;&nbsp;')
+            return tag.input(class_='btn', type='button', value=_("Remove from the Test Plan"), onclick='removeTestCase("'+tc_name+'", "'+planid+'")'), HTML(u'&nbsp;&nbsp;')
         else:
             return HTML(u'')
     
