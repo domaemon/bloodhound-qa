@@ -202,13 +202,14 @@ class WikiTestManagerInterface(Component):
         if page_name == 'TC':
             # Root of all catalogs
             insert1 = tag.div(class_='span12')(
+                        self._get_breadcrumb_markup(formatter, None, page_name, mode, fulldetails),
+                        tag.h1(_("Test Catalogs List")),
                         tag.div(id='pasteMultipleTCsHereMessage', class_='messageBox', style='display: none;')(_("Select the catalog into which to paste the Test Cases and click on 'Paste the copied Test Cases here'. "),
                             tag.a(href='javascript:void(0);', onclick='cancelTCsCopy()')(_("Cancel"))
                             ),
                         tag.div(id='pasteTCHereMessage', class_='messageBox', style='display: none;')(_("Select the catalog into which to paste the Test Case and click on 'Move the copied Test Case here'. "),
                             tag.a(href='javascript:void(0);', onclick='cancelTCMove()')(_("Cancel"))
                             ),
-                        tag.h1(_("Test Catalogs List")),
                         tag.br(), tag.br()
                         )
             fieldLabel = _("New Catalog:")
@@ -216,6 +217,7 @@ class WikiTestManagerInterface(Component):
         else:
             insert1 = tag.div(class_='span12')(
                         self._get_breadcrumb_markup(formatter, None, page_name, mode, fulldetails),
+                        tag.h1(_("Test Catalog")),
                         tag.div(style='border: 1px, solid, gray; padding: 1px;')(
                             self._get_switch_view_icon_markup(req, page_name, mode, fulldetails)
                             ),
@@ -228,8 +230,7 @@ class WikiTestManagerInterface(Component):
                             _("Select the catalog (even this one) into which to paste the Test Case and click on 'Move the copied Test Case here'. "),
                             tag.a(href='javascript:void(0);', onclick='cancelTCMove()')(_("Cancel"))
                             ),
-                        tag.br(),
-                        tag.h1(_("Test Catalog"))
+                        tag.br()
                         )
             fieldLabel = _("New Sub-Catalog:")
             buttonLabel = _("Add a Sub-Catalog")
@@ -1002,15 +1003,16 @@ class WikiTestManagerInterface(Component):
         
         breadcrumb = [{'name': 'TC', 'title': _("All Catalogs"), 'id': 'TC'}]
 
-        for i, tc in enumerate(tokens):
-            curr_path += '_'+tc
-            page = WikiPage(self.env, curr_path)
-            page_title = get_page_title(page.text)
-            
-            breadcrumb[(i+1):] = [{'name': tc, 'title': page_title, 'id': curr_path}]
+        if path_name != '':
+            for i, tc in enumerate(tokens):
+                curr_path += '_'+tc
+                page = WikiPage(self.env, curr_path)
+                page_title = get_page_title(page.text)
+                
+                breadcrumb[(i+1):] = [{'name': tc, 'title': page_title, 'id': curr_path}]
 
-            if tc == cat_name:
-                break
+                if tc == cat_name:
+                    break
 
         text = u''
 
