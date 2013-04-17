@@ -92,6 +92,8 @@ class DashboardModule(Component):
         """Initially this will render static widgets. With time it will be 
         more and more dynamic and flexible.
         """
+        req.perm.require('DASHBOARD_VIEW')
+
         if self.env[QueryModule] is not None:
             add_ctxtnav(req, _('Custom Query'), req.href.query())
         if self.env[ReportModule] is not None:
