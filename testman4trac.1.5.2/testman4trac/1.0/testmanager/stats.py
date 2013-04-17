@@ -189,6 +189,8 @@ class TestStatsPlugin(Component):
         return re.match(r'/teststats(?:_trac)?(?:/.*)?$', req.path_info)
 
     def process_request(self, req):
+        req.perm.require('TEST_STATS_VIEW')
+
         testmanagersystem = TestManagerSystem(self.env)
         tc_statuses = testmanagersystem.get_tc_statuses_by_color()
 
