@@ -2,19 +2,15 @@
 
 mkdir bin
 
-cd tracgenericclass/0.10
+cd tracgenericclass/1.0
 python setup.py bdist_egg
 cp dist/*.egg ../../bin
 
-cd ../../tracgenericworkflow/0.10
+cd ../../tracgenericworkflow/1.0
 python setup.py bdist_egg
 cp dist/*.egg ../../bin
 
-cd ../../sqlexecutor/0.10
-python setup.py bdist_egg
-cp dist/*.egg ../../bin
-
-cd ../../testman4trac/0.10
+cd ../../testman4trac/1.0
 python setup.py bdist_egg
 cp dist/*.egg ../../bin
 
