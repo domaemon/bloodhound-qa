@@ -233,20 +233,21 @@ class WikiTestManagerInterface(Component):
                     tag.br()
                     ))
 
-            insert2.append(tag.div(class_='field')(
-                    tag.br(), tag.br(), tag.br(),
-                    tag.div(style='border: 1px, solid, gray; padding: 1px;')(
-                        self._get_switch_view_icon_markup(req, page_name, mode, fulldetails)
-                        ),
-                    tag.label(
-                        tag.span(id='catErrorMsgSpan', style='color: red;'),
-                        tag.br(),
-                        tag.div(class_='input-append')(
-                            tag.input(id='catName', placeholder=fieldLabel, type='text', name='catName', size='50'),
-                            tag.input(class_='btn', type='button', value=buttonLabel, onclick='creaTestCatalog("'+cat_name+'")')
-                            )
+        insert2.append(tag.div(class_='field')(
+                tag.br(), tag.br(), tag.br(),
+                tag.div(style='border: 1px, solid, gray; padding: 1px;')(
+                    self._get_switch_view_icon_markup(req, page_name, mode, fulldetails)
+                    ),
+                # filter?
+                tag.label(
+                    tag.span(id='catErrorMsgSpan', style='color: red;'),
+                    tag.br(),
+                    tag.div(class_='input-append')(
+                        tag.input(id='catName', placeholder=fieldLabel, type='text', name='catName', size='50'),
+                        tag.input(class_='btn', type='button', value=buttonLabel, onclick='creaTestCatalog("'+cat_name+'")')
                         )
-                    ))
+                    )
+                ))
             
         if not page_name == 'TC':
             # The root of all catalogs cannot contain itself test cases,
