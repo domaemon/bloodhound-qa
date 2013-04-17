@@ -202,127 +202,92 @@ class WikiTestManagerInterface(Component):
         if page_name == 'TC':
             # Root of all catalogs
             insert1 = tag.div(class_='span12')(
-                        self._get_breadcrumb_markup(formatter, None, page_name, mode, fulldetails),
-                        tag.h1(_("Test Catalogs List")),
-                        tag.div(id='pasteMultipleTCsHereMessage', class_='messageBox', style='display: none;')(_("Select the catalog into which to paste the Test Cases and click on 'Paste the copied Test Cases here'. "),
-                            tag.a(href='javascript:void(0);', onclick='cancelTCsCopy()')(_("Cancel"))
-                            ),
-                        tag.div(id='pasteTCHereMessage', class_='messageBox', style='display: none;')(_("Select the catalog into which to paste the Test Case and click on 'Move the copied Test Case here'. "),
-                            tag.a(href='javascript:void(0);', onclick='cancelTCMove()')(_("Cancel"))
-                            ),
-                        tag.br(), tag.br()
-                        )
+                self._get_breadcrumb_markup(formatter, None, page_name, mode, fulldetails),
+                tag.h1(_("Test Catalogs List")),
+                tag.div(id='pasteMultipleTCsHereMessage', class_='messageBox', style='display: none;')(_("Select the catalog into which to paste the Test Cases and click on 'Paste the copied Test Cases here'. "), tag.a(href='javascript:void(0);', onclick='cancelTCsCopy()')(_("Cancel"))),
+                tag.div(id='pasteTCHereMessage', class_='messageBox', style='display: none;')(_("Select the catalog into which to paste the Test Case and click on 'Move the copied Test Case here'. "), tag.a(href='javascript:void(0);', onclick='cancelTCMove()')(_("Cancel"))),
+                )
             fieldLabel = _("New Catalog:")
             buttonLabel = _("Add a Catalog")
         else:
             insert1 = tag.div(class_='span12')(
-                        self._get_breadcrumb_markup(formatter, None, page_name, mode, fulldetails),
-                        tag.h1(_("Test Catalog")),
-                        tag.div(style='border: 1px, solid, gray; padding: 1px;')(
-                            self._get_switch_view_icon_markup(req, page_name, mode, fulldetails)
-                            ),
-                        tag.br(), 
-                        tag.div(id='pasteMultipleTCsHereMessage', class_='messageBox', style='display: none;')(
-                            _("Select the catalog (even this one) into which to paste the Test Cases and click on 'Paste the copied Test Cases here'. "),
-                            tag.a(href='javascript:void(0);', onclick='cancelTCsCopy()')(_("Cancel"))
-                            ),
-                        tag.div(id='pasteTCHereMessage', class_='messageBox', style='display: none;')(
-                            _("Select the catalog (even this one) into which to paste the Test Case and click on 'Move the copied Test Case here'. "),
-                            tag.a(href='javascript:void(0);', onclick='cancelTCMove()')(_("Cancel"))
-                            ),
-                        tag.br()
-                        )
+                self._get_breadcrumb_markup(formatter, None, page_name, mode, fulldetails),
+                tag.h1(_("Test Catalog")),
+                tag.div(id='pasteMultipleTCsHereMessage', class_='messageBox', style='display: none;')(_("Select the catalog (even this one) into which to paste the Test Cases and click on 'Paste the copied Test Cases here'. "), tag.a(href='javascript:void(0);', onclick='cancelTCsCopy()')(_("Cancel"))),
+                tag.div(id='pasteTCHereMessage', class_='messageBox', style='display: none;')(_("Select the catalog (even this one) into which to paste the Test Case and click on 'Move the copied Test Case here'. "), tag.a(href='javascript:void(0);', onclick='cancelTCMove()')(_("Cancel"))),
+                )
             fieldLabel = _("New Sub-Catalog:")
             buttonLabel = _("Add a Sub-Catalog")
 
         insert2 = tag.div(class_='span12')(
-                    HTML(self._build_catalog_tree(formatter.context, page_name, mode, fulldetails, table_columns, table_columns_map, custom_ctx)),
-                    tag.div(class_='testCaseList')(
-                        tag.br(), tag.br()
-                    ))
+            tag.br(), 
+            HTML(self._build_catalog_tree(formatter.context, page_name, mode, fulldetails, table_columns, table_columns_map, custom_ctx)),
+            tag.div(class_='testCaseList')(
+                tag.br(), tag.br()
+                ))
 
         if not page_name == 'TC':
             # The root of all catalogs cannot contain itself test cases
             insert2.append(tag.div()(
-                        self._get_custom_fields_markup(test_catalog, tmmodelprovider.get_custom_fields_for_realm('testcatalog')),
-                        tag.br()
+                    self._get_custom_fields_markup(test_catalog, tmmodelprovider.get_custom_fields_for_realm('testcatalog')),
+                    tag.br()
                     ))
 
-        insert2.append(tag.div(class_='field')(
+            insert2.append(tag.div(class_='field')(
                     tag.br(), tag.br(), tag.br(),
+                    tag.div(style='border: 1px, solid, gray; padding: 1px;')(
+                        self._get_switch_view_icon_markup(req, page_name, mode, fulldetails)
+                        ),
                     tag.label(
                         tag.span(id='catErrorMsgSpan', style='color: red;'),
                         tag.br(),
                         tag.div(class_='input-append')(
                             tag.input(id='catName', placeholder=fieldLabel, type='text', name='catName', size='50'),
                             tag.input(class_='btn', type='button', value=buttonLabel, onclick='creaTestCatalog("'+cat_name+'")')
-                        )
+                            )
                         )
                     ))
-
+            
         if not page_name == 'TC':
             # The root of all catalogs cannot contain itself test cases,
             #   cannot generate test plans and does not need a test plans list
             insert2.append(tag.div(class_='field')(
-                        tag.label(
-                            tag.span(id='errorMsgSpan', style='color: red;'),
-                            tag.br(),
-                            tag.div(class_='input-append')(
-                                tag.input(id='tcName', placeholder='New Test Case:', type='text', name='tcName', size='50'),
-                                tag.input(class_='btn', type='button', value=_("Add a Test Case"), onclick='creaTestCase("'+cat_name+'")')
-                            )
-                            ),
-                        tag.label(
-                            tag.span(id='errorMsgSpan2', style='color: red;'),
-                            tag.br(),
-                            tag.div(class_='input-append')(
-                                tag.input(id='planName', placeholder='New Test Plan:', type='text', name='planName', size='50'),
-                                tag.input(class_='btn', type='button', value=_("Generate a new Test Plan"), onclick='creaTestPlan("'+cat_name+'")')
-                            )
-                            ),
-                        tag.br(), 
-                        ))
+                    tag.label(
+                        tag.span(id='errorMsgSpan', style='color: red;'),
+                        tag.br(),
+                        tag.div(class_='input-append')(
+                            tag.input(id='tcName', placeholder='New Test Case:', type='text', name='tcName', size='50'), tag.input(class_='btn', type='button', value=_("Add a Test Case"), onclick='creaTestCase("'+cat_name+'")'))),
+                    tag.label(
+                        tag.span(id='errorMsgSpan2', style='color: red;'),
+                        tag.br(),
+                        tag.div(class_='input-append')(tag.input(id='planName', placeholder='New Test Plan:', type='text', name='planName', size='50'), tag.input(class_='btn', type='button', value=_("Generate a new Test Plan"), onclick='creaTestPlan("'+cat_name+'")'))),
+                    tag.br(), 
+                    ))
             insert2.append(HTML(self._get_testplan_dialog_markup(req, cat_name)))
                     
-        insert2.append(tag.br())
-        insert2.append(tag.br())
-                    
-        insert2.append(tag.input(
-                class_='btn', type='button', id='showSelectionBoxesButton', value=_("Select Multiple Test Cases"), onclick='showSelectionCheckboxes()')
-                )
-        insert2.append(tag.input(
-                class_='btn', type='button', id='copyMultipleTCsButton', value=_("Copy the Selected Test Cases"), onclick='copyMultipleTestCasesToClipboard()')
-                )
+            insert2.append(tag.br())
+            insert2.append(tag.br())
+            
+            insert2.append(tag.input(class_='btn', type='button', id='showSelectionBoxesButton', value=_("Select Multiple Test Cases"), onclick='showSelectionCheckboxes()'))
+            insert2.append(tag.input(class_='btn', type='button', id='copyMultipleTCsButton', value=_("Copy the Selected Test Cases"), onclick='copyMultipleTestCasesToClipboard()'))
                     
         if not page_name == 'TC':
-            insert2.append(tag.input(class_='btn', type='button', id='pasteMultipleTCsHereButton', value=_("Paste the copied Test Cases here"), onclick='pasteMultipleTestCasesIntoCatalog("'+cat_name+'")')
-                    )
-
-            insert2.append(tag.input(class_='btn', type='button', id='pasteTCHereButton', value=_("Move the copied Test Case here"), onclick='pasteTestCaseIntoCatalog("'+cat_name+'")')
-                    )
+            insert2.append(tag.input(class_='btn', type='button', id='pasteMultipleTCsHereButton', value=_("Paste the copied Test Cases here"), onclick='pasteMultipleTestCasesIntoCatalog("'+cat_name+'")'))
+            
+            insert2.append(tag.input(class_='btn', type='button', id='pasteTCHereButton', value=_("Move the copied Test Case here"), onclick='pasteTestCaseIntoCatalog("'+cat_name+'")'))
 
             insert2.append(HTML(self._get_import_dialog_markup(req, cat_name)))
-            insert2.append(tag.input(class_='btn', type='button', id='importTestCasesButton', value=_("Import Test Cases"), onclick='importTestCasesIntoCatalog("'+cat_name+'")')
-                    )
+            insert2.append(tag.input(class_='btn', type='button', id='importTestCasesButton', value=_("Import Test Cases"), onclick='importTestCasesIntoCatalog("'+cat_name+'")'))
             insert2.append(HTML(self._get_export_dialog_markup(req, cat_name, '-1', 'testcatalog')))
-            insert2.append(tag.input(class_='btn', type='button', id='exportTestCasesButton', value=_("Export Test Catalog"), onclick='exportTestCasesFromCatalog("'+cat_name+'")')
-                    )
+            insert2.append(tag.input(class_='btn', type='button', id='exportTestCasesButton', value=_("Export Test Catalog"), onclick='exportTestCasesFromCatalog("'+cat_name+'")'))
+            
+            insert2.append(tag.div(class_='field')(self._build_testplan_list(cat_name, mode, fulldetails, show_delete_button)))
 
-            insert2.append(tag.div(class_='field')(
-                self._build_testplan_list(cat_name, mode, fulldetails, show_delete_button)
-                ))
-
-            insert2.append(tag.div(class_='field')(
-                self._get_object_change_history_markup(test_catalog)
-                ))
-
-        insert2.append(tag.div()(tag.br(), tag.br(), tag.br(), tag.br()))
+            insert2.append(tag.div(class_='field')(self._get_object_change_history_markup(test_catalog)))
+            insert2.append(tag.div()(tag.br(), tag.br(), tag.br(), tag.br()))
 
         if not page_name == 'TC':        
-            insert3 = tag.div(id='new_delete')(
-                tag.input(class_='btn', type='submit', value=_("Delete this version"), name='delete_version'),
-                tag.input(class_='btn', type='submit', value=_("Delete Test Catalog"))
-                )
+            insert3 = tag.div(id='new_delete')(tag.input(class_='btn', type='submit', value=_("Delete this version"), name='delete_version'), tag.input(class_='btn', type='submit', value=_("Delete Test Catalog")))
         else:
             insert3 = HTML(u'')
         
@@ -354,32 +319,30 @@ class WikiTestManagerInterface(Component):
         tp = TestPlan(self.env, planid)
         
         insert1 = tag.div(class_='span12')(
-                    tag.a(href=req.href.wiki(page_name))(_("Back to the Catalog")),
-                    tag.div(style='border: 1px, solid, gray; padding: 1px;')(
-                        self._get_switch_view_icon_markup(req, page_name, mode, fulldetails, planid)
-                        ),
-                    tag.br(), 
-                    tag.h1(_("Test Plan: ")+tp['name']),
-                    tag.div(class_='testArtifactPropertiesDiv')(
-                        HTML(self._get_testplan_properties_markup(planid, cat_id, page_name))
-                        ),
-                    )
+            tag.a(href=req.href.wiki(page_name))(_("Back to the Catalog")),
+            tag.div(style='border: 1px, solid, gray; padding: 1px;')(
+                self._get_switch_view_icon_markup(req, page_name, mode, fulldetails, planid)
+                ),
+            tag.br(), 
+            tag.h1(_("Test Plan: ")+tp['name']),
+            tag.div(class_='testArtifactPropertiesDiv')(HTML(self._get_testplan_properties_markup(planid, cat_id, page_name)))
+            )
 
         insert2 = tag.div(class_='span12')(
-                    HTML(self._build_testplan_tree(formatter.context, str(planid), page_name, mode, self.sortby, table_columns, table_columns_map, custom_ctx)),
-                    tag.div(class_='testCaseList')(
-                    tag.br(),
-                    self._get_custom_fields_markup(test_plan, tmmodelprovider.get_custom_fields_for_realm('testplan')),
-                    tag.br(),
-                    HTML(self._get_export_dialog_markup(req, cat_name, planid, 'testplan')),
-                    tag.input(class_='btn', type='button', id='exportTestCasesButton', value=_("Export Test Plan"), onclick='exportTestCasesFromCatalog("'+cat_name+'")'),
-                    tag.br(),
-                    ),
-                    tag.div(class_='field')(
-                        self._get_object_change_history_markup(test_plan)
-                        ),
-                    tag.br(), tag.br(), tag.br(), tag.br()
-                    )
+            HTML(self._build_testplan_tree(formatter.context, str(planid), page_name, mode, self.sortby, table_columns, table_columns_map, custom_ctx)),
+            tag.div(class_='testCaseList')(
+                tag.br(),
+                self._get_custom_fields_markup(test_plan, tmmodelprovider.get_custom_fields_for_realm('testplan')),
+                tag.br(),
+                HTML(self._get_export_dialog_markup(req, cat_name, planid, 'testplan')),
+                tag.input(class_='btn', type='button', id='exportTestCasesButton', value=_("Export Test Plan"), onclick='exportTestCasesFromCatalog("'+cat_name+'")'),
+                tag.br(),
+                ),
+            tag.div(class_='field')(
+                self._get_object_change_history_markup(test_plan)
+                ),
+            tag.br(), tag.br(), tag.br(), tag.br()
+            )
                             
         common_code = self._write_common_code(req, True)
         
@@ -431,43 +394,30 @@ class WikiTestManagerInterface(Component):
         tmmodelprovider = GenericClassModelProvider(self.env)
         
         insert1 = tag.div(class_='span12')(
-                    self._get_breadcrumb_markup(formatter, planid, page_name, mode, fulldetails),
-                    tag.br(),
-                    tag.div(id='copiedMultipleTCsMessage', class_='messageBox', style='display: none;')(
-                        _("The Test Cases have been copied. Now select the catalog into which to paste the Test Cases and click on 'Paste the copied Test Cases here'.  "),
-                        tag.a(href='javascript:void(0);', onclick='cancelTCsCopy()')(_("Cancel"))
-                        ),
-                    tag.br(),
-                    tag.div(id='copiedTCMessage', class_='messageBox', style='display: none;')(
-                        _("The Test Case has been cut. Now select the catalog into which to move the Test Case and click on 'Move the copied Test Case here'. "),
-                        tag.a(href='javascript:void(0);', onclick='cancelTCMove()')(_("Cancel"))
-                        ),
-                    tag.br(),
-                    tag.span(style='font-size: large; font-weight: bold;')(
-                        tag.span()(
-                            _("Test Case")
-                            )
-                        )
-                    )
+            self._get_breadcrumb_markup(formatter, planid, page_name, mode, fulldetails),
+            tag.h1(_("Test Case")),
+            tag.div(id='copiedMultipleTCsMessage', class_='messageBox', style='display: none;')(_("The Test Cases have been copied. Now select the catalog into which to paste the Test Cases and click on 'Paste the copied Test Cases here'.  "), tag.a(href='javascript:void(0);', onclick='cancelTCsCopy()')(_("Cancel"))),
+            tag.div(id='copiedTCMessage', class_='messageBox', style='display: none;')(_("The Test Case has been cut. Now select the catalog into which to move the Test Case and click on 'Move the copied Test Case here'. "), tag.a(href='javascript:void(0);', onclick='cancelTCMove()')(_("Cancel"))),
+            )
         
         insert2 = tag.div(class_='span12 field', style='marging-top: 60px;')(
-                    tag.br(), tag.br(), 
-                    self._get_custom_fields_markup(test_case, tmmodelprovider.get_custom_fields_for_realm('testcase')),
-                    tag.br(),
-                    tag.input(class_='btn', type='button', value=_("Open a Ticket on this Test Case"), onclick='creaTicket("'+tc_name+'", "", "", "'+summary+'")'),
-                    HTML(u'&nbsp;&nbsp;'), 
-                    tag.input(class_='btn', type='button', value=_("Show Related Tickets"), onclick='showTickets("'+tc_name+'", "", "")'),
-                    HTML(u'&nbsp;&nbsp;'), 
-                    tag.input(class_='btn', type='button', id='moveTCButton', value=_("Move the Test Case into another catalog"), onclick='copyTestCaseToClipboard("'+tc_name+'")'),
-                    HTML(u'&nbsp;&nbsp;'), 
-                    tag.input(class_='btn', type='button', id='duplicateTCButton', value=_("Duplicate the Test Case"), onclick='duplicateTestCase("'+tc_name+'", "'+cat_name+'")'),
-                    HTML(u'&nbsp;&nbsp;'), 
-                    tag.input(class_='btn', type='button', id='addToTestPlanTCButton', value=_("Add to a Test Plan"), onclick='addTestCaseToTestplanDialog("'+tc_name+'")'),
-                    tag.div(class_='field')(
-                        self._get_object_change_history_markup(test_case)
-                        ),
-                    tag.br(), tag.br(), tag.br(), tag.br()
-                    )
+            tag.br(), tag.br(), 
+            self._get_custom_fields_markup(test_case, tmmodelprovider.get_custom_fields_for_realm('testcase')),
+            tag.br(),
+            tag.input(class_='btn', type='button', value=_("Open a Ticket on this Test Case"), onclick='creaTicket("'+tc_name+'", "", "", "'+summary+'")'),
+            HTML(u'&nbsp;&nbsp;'), 
+            tag.input(class_='btn', type='button', value=_("Show Related Tickets"), onclick='showTickets("'+tc_name+'", "", "")'),
+            HTML(u'&nbsp;&nbsp;'), 
+            tag.input(class_='btn', type='button', id='moveTCButton', value=_("Move the Test Case into another catalog"), onclick='copyTestCaseToClipboard("'+tc_name+'")'),
+            HTML(u'&nbsp;&nbsp;'), 
+            tag.input(class_='btn', type='button', id='duplicateTCButton', value=_("Duplicate the Test Case"), onclick='duplicateTestCase("'+tc_name+'", "'+cat_name+'")'),
+            HTML(u'&nbsp;&nbsp;'), 
+            tag.input(class_='btn', type='button', id='addToTestPlanTCButton', value=_("Add to a Test Plan"), onclick='addTestCaseToTestplanDialog("'+tc_name+'")'),
+            tag.div(class_='field')(
+                self._get_object_change_history_markup(test_case)
+                ),
+            tag.br(), tag.br(), tag.br(), tag.br()
+            )
 
         insert2.append(HTML(self._get_select_testplan_dialog_markup(req, test_case, tcat)))
                     
@@ -504,34 +454,32 @@ class WikiTestManagerInterface(Component):
         add_stylesheet(req, 'testmanager/css/menu.css')
         
         insert1 = tag.div(class_='span12')(
-                    self._get_breadcrumb_markup(formatter, planid, page_name, mode, fulldetails),
-                    tag.br(), tag.br(), tag.br(), 
-                    tag.span(style='font-size: large; font-weight: bold;')(
-                        self._get_testcase_status_markup(formatter, has_status, page_name, planid),
-                        tag.span()(                            
-                            _("Test Case")
-                            )
-                        )
-                    )
+            self._get_breadcrumb_markup(formatter, planid, page_name, mode, fulldetails),
+            tag.br(), tag.br(), tag.br(), 
+            tag.span(style='font-size: large; font-weight: bold;')(
+                self._get_testcase_status_markup(formatter, has_status, page_name, planid),
+                tag.span()(_("Test Case"))
+                )
+            )
         
         insert2 = tag.div(class_='span12 field', style='marging-top: 60px;')(
-                    tag.br(), tag.br(),
-                    self._get_custom_fields_markup(tcip, tmmodelprovider.get_custom_fields_for_realm('testcaseinplan'), ('page_name', 'status')),
-                    tag.br(), 
-                    self._get_testcase_change_status_markup(formatter, has_status, page_name, planid),
-                    tag.br(), tag.br(),
-                    self._get_update_to_latest_version_markup(tp, tc_name, planid),
-                    tag.input(class_='btn', type='button', value=_("Open a Ticket on this Test Case"), onclick='creaTicket("'+tc_name+'", "'+planid+'", "'+plan_name+'", "'+summary+'")'),
-                    HTML(u'&nbsp;&nbsp;'), 
-                    tag.input(class_='btn', type='button', value=_("Show Related Tickets"), onclick='showTickets("'+tc_name+'", "'+planid+'", "'+plan_name+'")'),
-                    HTML(u'&nbsp;&nbsp;'), 
-                    self._get_remove_from_tp_markup(tp, tc_name, planid),
-                    tag.br(), tag.br(), 
-                    self._get_testcase_status_history_markup(formatter, has_status, page_name, planid),
-                    self._get_object_change_history_markup(tcip, ['status']),
-                    tag.br(), tag.br(), tag.br(), tag.br()
-                    )
-                    
+            tag.br(), tag.br(),
+            self._get_custom_fields_markup(tcip, tmmodelprovider.get_custom_fields_for_realm('testcaseinplan'), ('page_name', 'status')),
+            tag.br(), 
+            self._get_testcase_change_status_markup(formatter, has_status, page_name, planid),
+            tag.br(), tag.br(),
+            self._get_update_to_latest_version_markup(tp, tc_name, planid),
+            tag.input(class_='btn', type='button', value=_("Open a Ticket on this Test Case"), onclick='creaTicket("'+tc_name+'", "'+planid+'", "'+plan_name+'", "'+summary+'")'),
+            HTML(u'&nbsp;&nbsp;'), 
+            tag.input(class_='btn', type='button', value=_("Show Related Tickets"), onclick='showTickets("'+tc_name+'", "'+planid+'", "'+plan_name+'")'),
+            HTML(u'&nbsp;&nbsp;'), 
+            self._get_remove_from_tp_markup(tp, tc_name, planid),
+            tag.br(), tag.br(), 
+            self._get_testcase_status_history_markup(formatter, has_status, page_name, planid),
+            self._get_object_change_history_markup(tcip, ['status']),
+            tag.br(), tag.br(), tag.br(), tag.br()
+            )
+        
         common_code = self._write_common_code(req, False, need_menu)
         
         return stream | Transformer('//body').append(common_code) | Transformer('//div[contains(@class,"wikipage")]').after(insert2) | Transformer('//div[contains(@class,"wikipage")]').before(insert1)
